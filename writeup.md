@@ -12,6 +12,8 @@ For training, the `vehicle` and `non-vehicle` images are read in as two separate
 
 Before extracting HOG feature, the image is converted from `RGB` color space to `YCrCb` space. Then HOG feature is extracted from all channels, examples can be found below. HOG features from all three channels are used for training.
 
+Vehicle:
+
 Channel 0:
 
 ![alt text](examples/vehicle_image_vs_hog_feature_channel_0.jpg)
@@ -26,6 +28,21 @@ Channel 2:
 
 ![alt text](examples/vehicle_image_vs_hog_feature_channel_2.jpg)
 
+Non-vehicle:
+
+Channel 0:
+
+![alt text](examples/non_vehicle_image_vs_hog_feature_channel_0.jpg)
+
+
+Channel 1:
+
+![alt text](examples/non_vehicle_image_vs_hog_feature_channel_1.jpg)
+
+
+Channel 2:
+
+![alt text](examples/non_vehicle_image_vs_hog_feature_channel_2.jpg)
 
 ####2. Explain how you settled on your final choice of HOG parameters.
 

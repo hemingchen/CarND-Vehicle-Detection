@@ -15,7 +15,7 @@ visualize_image_transformation(
     after_img=raw_non_veh_img, after_img_title='non vehicle image')
 
 ###############################################################################
-# 1) Test HOG feature extraction
+# 1) Test HOG feature extraction on vehicle images
 ###############################################################################
 channel = 0
 features_0, hog_image_0 = get_hog_features(
@@ -45,4 +45,37 @@ features_2, hog_image_2 = get_hog_features(
 
 visualize_image_transformation(
     before_img=color_converted_veh_img, before_img_title='vehicle image',
+    after_img=hog_image_2, after_img_title='hog feature channel {}'.format(channel))
+
+###############################################################################
+# 2) Test HOG feature extraction on non-vehicle images
+###############################################################################
+channel = 0
+features_0, hog_image_0 = get_hog_features(
+    color_converted_non_veh_img[:, :, channel],
+    orient, pix_per_cell, cell_per_block,
+    vis=True, feature_vec=True)
+
+visualize_image_transformation(
+    before_img=color_converted_non_veh_img, before_img_title='non vehicle image',
+    after_img=hog_image_0, after_img_title='hog feature channel {}'.format(channel))
+
+channel = 1
+features_1, hog_image_1 = get_hog_features(
+    color_converted_non_veh_img[:, :, channel],
+    orient, pix_per_cell, cell_per_block,
+    vis=True, feature_vec=True)
+
+visualize_image_transformation(
+    before_img=color_converted_non_veh_img, before_img_title='non vehicle image',
+    after_img=hog_image_1, after_img_title='hog feature channel {}'.format(channel))
+
+channel = 2
+features_2, hog_image_2 = get_hog_features(
+    color_converted_non_veh_img[:, :, channel],
+    orient, pix_per_cell, cell_per_block,
+    vis=True, feature_vec=True)
+
+visualize_image_transformation(
+    before_img=color_converted_non_veh_img, before_img_title='non vehicle image',
     after_img=hog_image_2, after_img_title='hog feature channel {}'.format(channel))
