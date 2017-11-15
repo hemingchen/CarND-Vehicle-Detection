@@ -4,7 +4,7 @@
 
 ####1. Explain how (and identify where in your code) you extracted HOG features from the training images.
 
-This HOG feature extraction code can be found in function `get_hog_features()` in lines #17-38 in `helper_funcs.py`. It is then called by function `extract_features_from_one_img()` in lines #65-118 in `helper_funcs.py`, which is eventually called by function `extract_features_from_multiple_imgs()` in lines #123-154 in `helper_funcs.py`, to process a sequence of image inputs for training.
+This HOG feature extraction code can be found in function `get_hog_features()` in lines #29-50 in `helper_funcs.py`. It is then called by function `extract_features_from_one_img()` in lines #77-130 in `helper_funcs.py`, which is eventually called by function `extract_features_from_multiple_imgs()` in lines #135-166 in `helper_funcs.py`, to process a sequence of image inputs for training.
 
 For training, the `vehicle` and `non-vehicle` images are read in as two separate sets, as in lines #48-71 in `training.py`. Here is an example of one of each of the `vehicle` and `non-vehicle` classes:
 
@@ -64,7 +64,7 @@ I trained a linear SVM using all given vehicle and non-vehicle images, as in lin
 
 ####1. Describe how (and identify where in your code) you implemented a sliding window search.  How did you decide what scales to search and how much to overlap windows?
 
-Per the suggestion of the course, I used HOG sub-sampling window search approach. To test the trained model, I first extracted the HOG feature of the lower portion of the image and then applied sliding window on top of it. Code can be found in the function `vehicle_detection_pipeline()` at lines #89-153 in `vehicle_detection.py`.
+First, I applied multiple scaling factors, including 1.0, 1.5, 2.0, 2.5, 3.0, 3.5 and 4.0. Under each scaling, I used HOG sub-sampling window search approach, where I first extracted the HOG feature of the lower portion of the image and then applied sliding window on top of it. Code can be found in the function `vehicle_detection_pipeline()` at lines #68-158 in `vehicle_detection.py`.
 
 I used 8x8 pixel blocks and windows with 8x8 blocks. Therefore each window has 64 pixels, which is identical to the original training image.
 
@@ -75,7 +75,7 @@ Ultimately I used the following pipeline for vehicle detection (lines #15-179 in
  
 1. Crop out the lower portion of the image
 2. Convert image from `RGB` to `YCrCb` color space 
-3. Use scale of 1.5 to resize image/patches
+3. Use multiple scales between 1.0 and 4.0 to resize image/patches
 4. Extract HOG features from all blocks and apply sliding window search (8x8 blocks per window) using HOG, Spatial and Histogram features for each window. 
 5. Test the extracted features against trained model.
 
@@ -99,7 +99,9 @@ Here's a [link to my video result](output_videos/project_video_output.mp4)
 
 ####2. Describe how (and identify where in your code) you implemented some kind of filter for false positives and some method for combining overlapping bounding boxes.
 
-I used heatmap to process individual window detection results. By consolidating all positive  windows, I created a heatmap and then thresholded that map to identify vehicle positions.  I then used `scipy.ndimage.measurements.label()` to identify individual blobs in the heatmap.  I then assumed each blob corresponded to a vehicle.  I constructed bounding boxes to cover the area of each blob detected. The corresponding code can be found in lines #157-163 of function `vehicle_detection_pipeline()` in `vehicle_detection.py`.
+Per the feedback from the reviewer, in the latest code, I used a heatmap history of 5 frames when processing the video. When processing a frame, the heatmap of such frame was first calculated by merging all individual positive windows, and then pushed into the history stack. Then, the average heatmap of the latest 5 frames was calculated, which was used to generate a final detection result after zeroing out all heat less than 1 to reduce the false detection noises. 
+
+The corresponding code can be found in lines #164-175 of function `vehicle_detection_pipeline()` in `vehicle_detection.py`.
 
 Here's more example result showing the raw detection result/positive windows, the heatmap and the consolidated/labeled windows:
 

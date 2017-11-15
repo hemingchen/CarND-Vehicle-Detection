@@ -1,4 +1,5 @@
 import os
+from collections import deque
 
 ###############################################################################
 # Training sets
@@ -61,10 +62,17 @@ sliding_window_overlap = (0.5, 0.5)
 ###############################################################################
 y_crop_start = 400
 y_crop_stop = 656
-scale = 1.5
+scales = [1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0]
 # Instead of overlap, define # of cells to slide when extracting hog features for the patch while hog features of all
 #  cells are computed in advance
 cells_per_step = 2
 # Bounding box color and thickness
 bbox_color = (0, 0, 255)
 bbox_thickness = 6
+
+###############################################################################
+# Video processing parameters
+###############################################################################
+heatmap_history_len = 8
+heatmap_history = deque(maxlen=heatmap_history_len)
+min_heat = 1
